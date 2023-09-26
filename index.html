@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Luas Lingkaran, Juring, dan Lingkaran</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    top: 100px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+h1 {
+    color: #333;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.input-container {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+#hasilLingkaran,
+#hasilJuring {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #555;
+
+}
+
+#hasilLingkaran p,
+#hasilJuring p {
+    margin: 10px 0;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Numerik</h1>
+        <div id="pilihan">
+            
+            <button onclick="pilihJuring()">Hitung Luas Juring</button>
+            <button onclick="pilihLingkaranLuas()">Hitung Luas & Keliling Lingkaran</button>
+        </div>
+        <div id="lingkaran" style="display: none;"><br>
+            <h1>Hitung Luas Lingkaran</h1>
+            <label for="radius">Masukkan jari-jari lingkaran:</label>
+            <input type="number" id="radiusLingkaran" placeholder="Jari-Jari">
+            <input type="number" id="diameterLingkaran" placeholder="Diameter">
+            <input type="number" id="luasLingkaran" placeholder="Luas">
+            <input type="number" id="kelilingLingkaran" placeholder="Keliling"><br>
+            <select id="satuanLingkaran">
+                <option value="cm">cm</option>
+                <option value="m">m</option>
+            </select>
+            <button onclick="hitungLingkaran()">Hitung</button>
+            <div id="hasilLingkaran" style="display: none;">
+                <p>Luas Lingkaran: <span id="luasLingkaranHasil"></span></p>
+                <p>Keliling Lingkaran: <span id="kelilingLingkaranHasil"></span></p>
+                <p><span id="galatLuasLingkaran"></span></p>
+                <p><span id="galatKelilingLingkaran"></span></p>
+            </div>
+        </div>
+        <div id="juring" style="display: none;"><br>
+            <h1>Hitung Juring</h1>
+            <label for="radiusJuring">Masukkan jari-jari juring (r):</label>
+            <input type="number" id="radiusJuring" placeholder="Jari-Jari (cm)">
+            <label for="angleJuring">Masukkan sudut juring (θ):</label>
+            <input type="number" id="angleJuring" placeholder="Sudut (derajat)">
+            <button onclick="hitungLuasJuring()">Hitung</button>
+            <div id="hasilJuring" style="display: none;">
+                <p>Luas Juring: <span id="luasJuring"></span></p>
+                <p><span id="galatJuring"></span></p>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function pilihJuring() {
+            document.getElementById('pilihan').style.display = 'none';
+            document.getElementById('juring').style.display = 'block';
+            document.getElementById('lingkaran').style.display = 'none';
+        }
+
+        function pilihLingkaranLuas() {
+            document.getElementById('pilihan').style.display = 'none';
+            document.getElementById('lingkaran').style.display = 'block';
+            document.getElementById('juring').style.display = 'none';
+        }
+
+        function hitungLingkaran() {
+            let radiusLingkaran = parseFloat(document.getElementById('radiusLingkaran').value);
+            const diameterLingkaran = parseFloat(document.getElementById('diameterLingkaran').value);
+            const luasLingkaranInput = parseFloat(document.getElementById('luasLingkaran').value);
+            const kelilingLingkaranInput = parseFloat(document.getElementById('kelilingLingkaran').value);
+            const satuanLingkaran = document.getElementById('satuanLingkaran').value;
+
+            let luasLingkaran, kelilingLingkaran;
+
+            if (radiusLingkaran && satuanLingkaran === 'm') {
+                radiusLingkaran = radiusLingkaran / 100; // Konversi cm ke m
+            } else if (diameterLingkaran && satuanLingkaran === 'm') {
+                radiusLingkaran = diameterLingkaran / 200; // Konversi cm ke m
+            }
+
+            if (radiusLingkaran) {
+                luasLingkaran = Math.PI * Math.pow(radiusLingkaran, 2);
+                kelilingLingkaran = 2 * Math.PI * radiusLingkaran;
+            } else if (diameterLingkaran) {
+                radiusLingkaran = diameterLingkaran / 2;
+                luasLingkaran = Math.PI * Math.pow(radiusLingkaran, 2);
+                kelilingLingkaran = 2 * Math.PI * radiusLingkaran;
+            } else if (luasLingkaranInput) {
+                luasLingkaran = luasLingkaranInput;
+                radiusLingkaran = Math.sqrt(luasLingkaran / Math.PI);
+                kelilingLingkaran = 2 * Math.PI * radiusLingkaran;
+            } else if (kelilingLingkaranInput) {
+                kelilingLingkaran = kelilingLingkaranInput;
+                radiusLingkaran = kelilingLingkaran / (2 * Math.PI);
+                luasLingkaran = Math.PI * Math.pow(radiusLingkaran, 2);
+            }
+
+            const hasilLingkaran = document.getElementById('hasilLingkaran');
+            hasilLingkaran.style.display = 'block';
+            document.getElementById('luasLingkaranHasil').textContent = `${luasLingkaran.toFixed(2)} ${satuanLingkaran}²`;
+            document.getElementById('kelilingLingkaranHasil').textContent = `${kelilingLingkaran.toFixed(2)} ${satuanLingkaran}`;
+            
+            const inputLuasLingkaran = luasLingkaranInput ? luasLingkaranInput : Math.PI * Math.pow(radiusLingkaran, 2);
+            const inputKelilingLingkaran = kelilingLingkaranInput ? kelilingLingkaranInput : 2 * Math.PI * radiusLingkaran;
+            
+            const galatLuas = Math.abs(((inputLuasLingkaran - luasLingkaran) / inputLuasLingkaran) * 100);
+            const galatKeliling = Math.abs(((inputKelilingLingkaran - kelilingLingkaran) / inputKelilingLingkaran) * 100);
+            
+            document.getElementById('galatLuasLingkaran').textContent = `Galat Luas: ${galatLuas.toFixed(2)}%`;
+            document.getElementById('galatKelilingLingkaran').textContent = `Galat Keliling: ${galatKeliling.toFixed(2)}%`;
+        }
+
+        function hitungLuasJuring() {
+            const radiusJuring = parseFloat(document.getElementById('radiusJuring').value);
+            const angleJuring = parseFloat(document.getElementById('angleJuring').value);
+            const luasJuring = (angleJuring / 360) * (Math.PI * Math.pow(radiusJuring, 2));
+            const hasilJuring = document.getElementById('hasilJuring');
+            hasilJuring.style.display = 'block';
+            document.getElementById('luasJuring').textContent = `${luasJuring.toFixed(2)} cm²`;
+
+            const luasLingkaranInput = parseFloat(document.getElementById('luasLingkaran').value);
+            const inputLuasLingkaran = luasLingkaranInput ? luasLingkaranInput : Math.PI * Math.pow(radiusJuring, 2);
+
+            const galat = Math.abs(((inputLuasLingkaran - luasJuring) / inputLuasLingkaran) * 100);
+            const galatJuring = document.getElementById('galatJuring');
+            galatJuring.textContent = `Galat: ${galat.toFixed(2)}%`;
+        }
+    </script>
+</body>
+</html>
